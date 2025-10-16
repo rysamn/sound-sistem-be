@@ -41,12 +41,14 @@ public class BarangKembaliDao {
 
     public int insert(BarangKembaliDto b) {
         String sql = "INSERT INTO barang_kembali (barang_keluar_id, tanggal_kembali, kondisi, keterangan) VALUES (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, b.getBarangKeluarId(), b.getTanggalKembali(), b.getKondisi(), b.getKeterangan());
+        return jdbcTemplate.update(sql, b.getBarangKeluarId(), b.getTanggalKembali(), b.getKondisi(),
+                b.getKeterangan());
     }
 
     public int update(BarangKembaliDto b) {
         String sql = "UPDATE barang_kembali SET barang_keluar_id = ?, tanggal_kembali = ?, kondisi = ?, keterangan = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, b.getBarangKeluarId(), b.getTanggalKembali(), b.getKondisi(), b.getKeterangan(), b.getId());
+        return jdbcTemplate.update(sql, b.getBarangKeluarId(), b.getTanggalKembali(), b.getKondisi(), b.getKeterangan(),
+                b.getId());
     }
 
     public int delete(int id) {

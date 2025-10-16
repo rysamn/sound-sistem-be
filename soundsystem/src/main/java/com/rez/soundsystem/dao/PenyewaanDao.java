@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public class PenyewaanDao {
-    @Autowired private JdbcTemplate jdbc;
+    @Autowired
+    private JdbcTemplate jdbc;
 
     private final RowMapper<PenyewaanDto> M = new RowMapper<>() {
         @Override
@@ -30,11 +31,29 @@ public class PenyewaanDao {
         }
     };
 
-    public List<PenyewaanDto> findAll(){ return jdbc.query("SELECT * FROM penyewaan ORDER BY id", M); }
-    public PenyewaanDto findById(int id){ return jdbc.queryForObject("SELECT * FROM penyewaan WHERE id=?", M, id); }
-    public int insert(PenyewaanDto p){ return jdbc.update("INSERT INTO penyewaan (pelanggan_id, job_order_id, tanggal_sewa, tanggal_kembali, total_biaya, status, keterangan) VALUES (?,?,?,?,?,?,?)",
-                p.getPelangganId(), p.getJobOrderId(), p.getTanggalSewa(), p.getTanggalKembali(), p.getTotalBiaya(), p.getStatus(), p.getKeterangan()); }
-    public int update(PenyewaanDto p){ return jdbc.update("UPDATE penyewaan SET pelanggan_id=?, job_order_id=?, tanggal_sewa=?, tanggal_kembali=?, total_biaya=?, status=?, keterangan=? WHERE id=?",
-                p.getPelangganId(), p.getJobOrderId(), p.getTanggalSewa(), p.getTanggalKembali(), p.getTotalBiaya(), p.getStatus(), p.getKeterangan(), p.getId()); }
-    public int delete(int id){ return jdbc.update("DELETE FROM penyewaan WHERE id=?", id); }
+    public List<PenyewaanDto> findAll() {
+        return jdbc.query("SELECT * FROM penyewaan ORDER BY id", M);
+    }
+
+    public PenyewaanDto findById(int id) {
+        return jdbc.queryForObject("SELECT * FROM penyewaan WHERE id=?", M, id);
+    }
+
+    public int insert(PenyewaanDto p) {
+        return jdbc.update(
+                "INSERT INTO penyewaan (pelanggan_id, job_order_id, tanggal_sewa, tanggal_kembali, total_biaya, status, keterangan) VALUES (?,?,?,?,?,?,?)",
+                p.getPelangganId(), p.getJobOrderId(), p.getTanggalSewa(), p.getTanggalKembali(), p.getTotalBiaya(),
+                p.getStatus(), p.getKeterangan());
+    }
+
+    public int update(PenyewaanDto p) {
+        return jdbc.update(
+                "UPDATE penyewaan SET pelanggan_id=?, job_order_id=?, tanggal_sewa=?, tanggal_kembali=?, total_biaya=?, status=?, keterangan=? WHERE id=?",
+                p.getPelangganId(), p.getJobOrderId(), p.getTanggalSewa(), p.getTanggalKembali(), p.getTotalBiaya(),
+                p.getStatus(), p.getKeterangan(), p.getId());
+    }
+
+    public int delete(int id) {
+        return jdbc.update("DELETE FROM penyewaan WHERE id=?", id);
+    }
 }

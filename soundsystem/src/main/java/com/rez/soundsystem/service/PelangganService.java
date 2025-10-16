@@ -11,9 +11,24 @@ import java.util.List;
 public class PelangganService {
     @Autowired
     private PelangganDao dao;
-    public List<PelangganDto> all(){ return dao.findAll(); }
-    public PelangganDto byId(int id){ return dao.findById(id); }
-    public int create(PelangganDto p){ return dao.insert(p); }
-    public int update(PelangganDto p){ return dao.update(p); }
-    public int delete(int id){ return dao.delete(id); }
+
+    public List<PelangganDto> all() {
+        return dao.findAll();
+    }
+
+    public PelangganDto byId(int id) {
+        return dao.findById(id);
+    }
+
+    public int create(PelangganDto p) {
+        return dao.insert(p);
+    }
+
+    public int update(PelangganDto p) {
+        return dao.update(p);
+    }
+
+    public int delete(int id) {
+        return dao.delete(id);
+    }
 }

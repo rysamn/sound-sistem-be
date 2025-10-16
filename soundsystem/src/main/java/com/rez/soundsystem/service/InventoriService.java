@@ -13,13 +13,23 @@ public class InventoriService {
     @Autowired
     private InventoriDao dao;
 
-    public List<InventoriDto> getAll() { return dao.findAll(); }
+    public List<InventoriDto> getAll() {
+        return dao.findAll();
+    }
 
-    public InventoriDto getById(int id) { return dao.findById(id); }
+    public InventoriDto getById(int id) {
+        return dao.findById(id);
+    }
 
-    public int create(InventoriDto dto) { return dao.insert(dto); }
+    public int create(InventoriDto dto) {
+        return dao.insert(dto);
+    }
 
-    public int update(InventoriDto dto) { return dao.update(dto); }
+    public int update(InventoriDto dto) {
+        return dao.update(dto);
+    }
 
-    public int delete(int id) { return dao.delete(id); }
+    public int delete(int id) {
+        return dao.delete(id);
+    }
 }

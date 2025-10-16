@@ -9,10 +9,26 @@ import java.util.List;
 
 @Service
 public class BarangKembaliService {
-    @Autowired private BarangKembaliDao dao;
-    public List<BarangKembaliDto> all(){ return dao.findAll(); }
-    public BarangKembaliDto byId(int id){ return dao.findById(id); }
-    public int create(BarangKembaliDto b){ return dao.insert(b); }
-    public int update(BarangKembaliDto b){ return dao.update(b); }
-    public int delete(int id){ return dao.delete(id); }
+    @Autowired
+    private BarangKembaliDao dao;
+
+    public List<BarangKembaliDto> all() {
+        return dao.findAll();
+    }
+
+    public BarangKembaliDto byId(int id) {
+        return dao.findById(id);
+    }
+
+    public int create(BarangKembaliDto b) {
+        return dao.insert(b);
+    }
+
+    public int update(BarangKembaliDto b) {
+        return dao.update(b);
+    }
+
+    public int delete(int id) {
+        return dao.delete(id);
+    }
 }

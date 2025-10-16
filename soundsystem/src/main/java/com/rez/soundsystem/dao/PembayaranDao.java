@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public class PembayaranDao {
-    @Autowired private JdbcTemplate jdbc;
+    @Autowired
+    private JdbcTemplate jdbc;
     private final RowMapper<PembayaranDto> M = new RowMapper<>() {
         @Override
         public PembayaranDto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -26,9 +27,28 @@ public class PembayaranDao {
             return p;
         }
     };
-    public List<PembayaranDto> findAll(){ return jdbc.query("SELECT * FROM pembayaran ORDER BY id", M); }
-    public PembayaranDto findById(int id){ return jdbc.queryForObject("SELECT * FROM pembayaran WHERE id=?", M, id); }
-    public int insert(PembayaranDto p){ return jdbc.update("INSERT INTO pembayaran (job_order_id,tanggal_bayar,jumlah,metode,keterangan) VALUES (?,?,?,?,?)", p.getJobOrderId(), p.getTanggalBayar(), p.getJumlah(), p.getMetode(), p.getKeterangan() ); }
-    public int update(PembayaranDto p){ return jdbc.update("UPDATE pembayaran SET job_order_id=?, tanggal_bayar=?, jumlah=?, metode=?, keterangan=? WHERE id=?", p.getJobOrderId(), p.getTanggalBayar(), p.getJumlah(), p.getMetode(), p.getKeterangan(), p.getId()); }
-    public int delete(int id){ return jdbc.update("DELETE FROM pembayaran WHERE id=?", id); }
+
+    public List<PembayaranDto> findAll() {
+        return jdbc.query("SELECT * FROM pembayaran ORDER BY id", M);
+    }
+
+    public PembayaranDto findById(int id) {
+        return jdbc.queryForObject("SELECT * FROM pembayaran WHERE id=?", M, id);
+    }
+
+    public int insert(PembayaranDto p) {
+        return jdbc.update(
+                "INSERT INTO pembayaran (job_order_id,tanggal_bayar,jumlah,metode,keterangan) VALUES (?,?,?,?,?)",
+                p.getJobOrderId(), p.getTanggalBayar(), p.getJumlah(), p.getMetode(), p.getKeterangan());
+    }
+
+    public int update(PembayaranDto p) {
+        return jdbc.update(
+                "UPDATE pembayaran SET job_order_id=?, tanggal_bayar=?, jumlah=?, metode=?, keterangan=? WHERE id=?",
+                p.getJobOrderId(), p.getTanggalBayar(), p.getJumlah(), p.getMetode(), p.getKeterangan(), p.getId());
+    }
+
+    public int delete(int id) {
+        return jdbc.update("DELETE FROM pembayaran WHERE id=?", id);
+    }
 }
