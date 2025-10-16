@@ -34,4 +34,14 @@ public class PenggunaDao {
             return Optional.empty();
         }
     }
+
+    public Optional<PenggunaDto> findByUsername(String username) {
+        String sql = "SELECT id_pengguna, username, nama_lengkap, role FROM pengguna WHERE username = ?";
+        try {
+            PenggunaDto pengguna = jdbc.queryForObject(sql, ROW_MAPPER, username);
+            return Optional.ofNullable(pengguna);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
 }

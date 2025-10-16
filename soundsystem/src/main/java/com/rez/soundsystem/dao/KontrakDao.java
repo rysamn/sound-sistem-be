@@ -60,8 +60,7 @@ public class KontrakDao {
                 p.getTanggalMulai() == null ? null : java.sql.Timestamp.valueOf(p.getTanggalMulai()),
                 p.getTanggalSelesai() == null ? null : java.sql.Timestamp.valueOf(p.getTanggalSelesai()),
                 p.getHargaSewa(), p.getUangMuka(), p.getPelunasan(), p.getMetodeBayar(), p.getNoRekening(),
-                p.getStatus(), p.getKeterangan()
-        );
+                p.getStatus(), p.getKeterangan());
     }
 
     public int update(KontrakDto p) {
@@ -72,8 +71,7 @@ public class KontrakDao {
                 p.getTanggalMulai() == null ? null : java.sql.Timestamp.valueOf(p.getTanggalMulai()),
                 p.getTanggalSelesai() == null ? null : java.sql.Timestamp.valueOf(p.getTanggalSelesai()),
                 p.getHargaSewa(), p.getUangMuka(), p.getPelunasan(), p.getMetodeBayar(), p.getNoRekening(),
-                p.getStatus(), p.getKeterangan(), p.getId()
-        );
+                p.getStatus(), p.getKeterangan(), p.getId());
     }
 
     public int delete(int id) {

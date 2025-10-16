@@ -49,8 +49,7 @@ public class JurnalDao {
                 dto.getJenis(),
                 dto.getKeterangan(),
                 dto.getTotal(),
-                dto.getIdJurnal()
-        );
+                dto.getIdJurnal());
     }
 
     public int delete(int id) {
