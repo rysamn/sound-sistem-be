@@ -14,15 +14,14 @@ import java.util.List;
 public class BarangKeluarDao {
     @Autowired
     private JdbcTemplate jdbc;
-    private final RowMapper<BarangKeluarDto> M = new RowMapper<>() {
+    private final RowMapper<BarangKeluarDto> ROW_MAPPER = new RowMapper<>() {
         @Override
         public BarangKeluarDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             BarangKeluarDto b = new BarangKeluarDto();
-            b.setId(rs.getInt("id"));
-            b.setJobOrderId(rs.getInt("job_order_id"));
-            b.setInventoriId(rs.getInt("inventori_id"));
+            b.setId(rs.getInt("id_barang_keluar"));
+            b.setIdSuratJalan(rs.getInt("id_surat_jalan"));
+            b.setKodeInventori(rs.getInt("kode_inventori"));
             b.setJumlah(rs.getInt("jumlah"));
-            b.setTanggalKeluar(rs.getDate("tanggal_keluar"));
             b.setPenanggungJawabGudang(rs.getString("penanggung_jawab_gudang"));
             b.setSoundEngineer(rs.getString("sound_engineer"));
             b.setStatus(rs.getString("status"));
@@ -31,28 +30,31 @@ public class BarangKeluarDao {
     };
 
     public List<BarangKeluarDto> findAll() {
-        return jdbc.query("SELECT * FROM barang_keluar ORDER BY id", M);
+        return jdbc.query("SELECT * FROM barang_keluar ORDER BY id_barang_keluar", ROW_MAPPER);
     }
 
     public BarangKeluarDto findById(int id) {
-        return jdbc.queryForObject("SELECT * FROM barang_keluar WHERE id=?", M, id);
+        return jdbc.queryForObject("SELECT * FROM barang_keluar WHERE id_barang_keluar=?", ROW_MAPPER, id);
     }
 
     public int insert(BarangKeluarDto b) {
+        String sql = "INSERT INTO barang_keluar (id_surat_jalan, kode_inventori, jumlah, penanggung_jawab_gudang, sound_engineer, status) VALUES (?,?,?,?,?,?)";
         return jdbc.update(
-                "INSERT INTO barang_keluar (job_order_id,inventori_id,jumlah,tanggal_keluar,penanggung_jawab_gudang,sound_engineer,status) VALUES (?,?,?,?,?,?,?)",
-                b.getJobOrderId(), b.getInventoriId(), b.getJumlah(), b.getTanggalKeluar(),
+                sql,
+                b.getIdSuratJalan(), b.getKodeInventori(), b.getJumlah(),
                 b.getPenanggungJawabGudang(), b.getSoundEngineer(), b.getStatus());
     }
 
     public int update(BarangKeluarDto b) {
+        String sql = "UPDATE barang_keluar SET id_surat_jalan=?, kode_inventori=?, jumlah=?, penanggung_jawab_gudang=?, sound_engineer=?, status=? WHERE id_barang_keluar=?";
         return jdbc.update(
-                "UPDATE barang_keluar SET job_order_id=?, inventori_id=?, jumlah=?, tanggal_keluar=?, penanggung_jawab_gudang=?, sound_engineer=?, status=? WHERE id=?",
-                b.getJobOrderId(), b.getInventoriId(), b.getJumlah(), b.getTanggalKeluar(),
-                b.getPenanggungJawabGudang(), b.getSoundEngineer(), b.getStatus(), b.getId());
+                sql,
+                b.getIdSuratJalan(), b.getKodeInventori(), b.getJumlah(),
+                b.getPenanggungJawabGudang(), b.getSoundEngineer(), b.getStatus(),
+                b.getId());
     }
 
     public int delete(int id) {
-        return jdbc.update("DELETE FROM barang_keluar WHERE id=?", id);
+        return jdbc.update("DELETE FROM barang_keluar WHERE id_barang_keluar=?", id);
     }
 }

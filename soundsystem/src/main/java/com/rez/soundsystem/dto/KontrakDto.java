@@ -5,16 +5,18 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class JobOrderDto {
+public class KontrakDto {
     private Integer id;
-    private String namaPenyewa;
+    private Integer idPelanggan;
     private String venue;
     private String acara;
     private LocalDateTime tanggalMulai;
     private LocalDateTime tanggalSelesai;
     private Double hargaSewa;
-    private String statusPembayaran;
+    private Double uangMuka;
+    private Double pelunasan;
     private String metodeBayar;
     private String noRekening;
-    private java.sql.Date tanggalOrder;
+    private String status;
+    private String keterangan;
 }

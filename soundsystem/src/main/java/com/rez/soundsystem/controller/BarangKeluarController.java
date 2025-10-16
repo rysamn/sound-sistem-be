@@ -3,6 +3,8 @@ package com.rez.soundsystem.controller;
 import com.rez.soundsystem.dto.BarangKeluarDto;
 import com.rez.soundsystem.service.BarangKeluarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,31 +17,35 @@ public class BarangKeluarController {
     BarangKeluarService service;
 
     @GetMapping
-    public List<BarangKeluarDto> all() {
-        return service.all();
+    public List<BarangKeluarDto> findAll() {
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public BarangKeluarDto get(@PathVariable int id) {
-        return service.byId(id);
+    public BarangKeluarDto findById(@PathVariable int id) {
+        return service.findById(id);
     }
 
     @PostMapping
-    public String create(@RequestBody BarangKeluarDto b) {
-        service.create(b);
-        return "OK";
+    public ResponseEntity<String> create(@RequestBody BarangKeluarDto b) {
+        if (service.create(b) > 0) {
+            return new ResponseEntity<>("Data Barang Keluar berhasil dibuat.", HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>("Gagal membuat data Barang Keluar.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable int id, @RequestBody BarangKeluarDto b) {
+    public ResponseEntity<String> update(@PathVariable int id, @RequestBody BarangKeluarDto b) {
         b.setId(id);
-        service.update(b);
-        return "OK";
+        if (service.update(b) > 0) {
+            return new ResponseEntity<>("Data Barang Keluar berhasil diperbarui.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Gagal memperbarui data Barang Keluar.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable int id) {
         service.delete(id);
-        return "OK";
+        return new ResponseEntity<>("Data Barang Keluar berhasil dihapus.", HttpStatus.OK);
     }
 }

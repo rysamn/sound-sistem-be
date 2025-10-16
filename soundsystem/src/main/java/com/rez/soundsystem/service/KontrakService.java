@@ -1,30 +1,30 @@
 package com.rez.soundsystem.service;
 
-import com.rez.soundsystem.dao.PenyewaanDao;
-import com.rez.soundsystem.dto.PenyewaanDto;
+import com.rez.soundsystem.dao.KontrakDao;
+import com.rez.soundsystem.dto.KontrakDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PenyewaanService {
+public class KontrakService {
     @Autowired
-    private PenyewaanDao dao;
+    private KontrakDao dao;
 
-    public List<PenyewaanDto> all() {
+    public List<KontrakDto> findAll() {
         return dao.findAll();
     }
 
-    public PenyewaanDto byId(int id) {
+    public KontrakDto findById(int id) {
         return dao.findById(id);
     }
 
-    public int create(PenyewaanDto p) {
+    public int create(KontrakDto p) {
         return dao.insert(p);
     }
 
-    public int update(PenyewaanDto p) {
+    public int update(KontrakDto p) {
         return dao.update(p);
     }
 

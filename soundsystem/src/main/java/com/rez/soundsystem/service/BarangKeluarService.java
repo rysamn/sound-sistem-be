@@ -12,11 +12,11 @@ public class BarangKeluarService {
     @Autowired
     private BarangKeluarDao dao;
 
-    public List<BarangKeluarDto> all() {
+    public List<BarangKeluarDto> findAll() {
         return dao.findAll();
     }
 
-    public BarangKeluarDto byId(int id) {
+    public BarangKeluarDto findById(int id) {
         return dao.findById(id);
     }
 
