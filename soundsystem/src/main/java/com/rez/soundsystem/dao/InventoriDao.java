@@ -20,47 +20,50 @@ public class InventoriDao {
         @Override
         public InventoriDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             InventoriDto d = new InventoriDto();
-            d.setId(rs.getInt("id"));
-            d.setKodeInventori(rs.getString("kode_inventori"));
-            d.setNamaEquipment(rs.getString("nama_equipment"));
+            d.setId_barang(rs.getInt("id_barang"));
+            d.setKode_inventori(rs.getString("kode_inventori"));
+            d.setNama_barang(rs.getString("nama_barang"));
             d.setUkuran(rs.getString("ukuran"));
             d.setMerek(rs.getString("merek"));
-            d.setFungsiEquipment(rs.getString("fungsi_equipment"));
+            d.setFungsi_equipment(rs.getString("fungsi_equipment"));
             d.setKelengkapan(rs.getString("kelengkapan"));
             d.setStatus(rs.getString("status"));
             d.setFoto(rs.getString("foto"));
+            d.setTipe(rs.getString("tipe"));
+            d.setDeskripsi(rs.getString("deskripsi"));
             return d;
         }
     };
 
     public List<InventoriDto> findAll() {
-        String sql = "SELECT * FROM inventori ORDER BY id";
+        String sql = "SELECT * FROM inventori ORDER BY id_barang";
         return jdbc.query(sql, MAPPER);
     }
 
     public InventoriDto findById(int id) {
-        String sql = "SELECT * FROM inventori WHERE id = ?";
+        String sql = "SELECT * FROM inventori WHERE id_barang = ?";
         return jdbc.queryForObject(sql, MAPPER, id);
     }
 
     public int insert(InventoriDto d) {
-        String sql = "INSERT INTO inventori (kode_inventori, nama_equipment, ukuran, merek, fungsi_equipment, kelengkapan, status, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO inventori (kode_inventori, nama_barang, ukuran, merek, fungsi_equipment, kelengkapan, status, foto, tipe, deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbc.update(sql,
-                d.getKodeInventori(), d.getNamaEquipment(), d.getUkuran(),
-                d.getMerek(), d.getFungsiEquipment(), d.getKelengkapan(),
-                d.getStatus(), d.getFoto());
+                d.getKode_inventori(), d.getNama_barang(), d.getUkuran(),
+                d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
+                d.getStatus(), d.getFoto(), d.getTipe(), d.getDeskripsi());
     }
 
     public int update(InventoriDto d) {
-        String sql = "UPDATE inventori SET kode_inventori=?, nama_equipment=?, ukuran=?, merek=?, fungsi_equipment=?, kelengkapan=?, status=?, foto=? WHERE id=?";
+        String sql = "UPDATE inventori SET kode_inventori=?, nama_barang=?, ukuran=?, merek=?, fungsi_equipment=?, kelengkapan=?, status=?, foto=?, tipe=?, deskripsi=? WHERE id=?";
         return jdbc.update(sql,
-                d.getKodeInventori(), d.getNamaEquipment(), d.getUkuran(),
-                d.getMerek(), d.getFungsiEquipment(), d.getKelengkapan(),
-                d.getStatus(), d.getFoto(), d.getId());
+                d.getKode_inventori(), d.getNama_barang(), d.getUkuran(),
+                d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
+                d.getStatus(), d.getFoto(), d.getTipe(), d.getDeskripsi(),
+                d.getId_barang());
     }
 
     public int delete(int id) {
-        String sql = "DELETE FROM inventori WHERE id = ?";
+        String sql = "DELETE FROM inventori WHERE id_barang = ?";
         return jdbc.update(sql, id);
     }
 }
