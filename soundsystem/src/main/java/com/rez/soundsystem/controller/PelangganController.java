@@ -3,6 +3,8 @@ package com.rez.soundsystem.controller;
 import com.rez.soundsystem.dto.PelangganDto;
 import com.rez.soundsystem.service.PelangganService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,31 +17,35 @@ public class PelangganController {
     PelangganService service;
 
     @GetMapping
-    public List<PelangganDto> all() {
+    public List<PelangganDto> findAll() {
         return service.all();
     }
 
     @GetMapping("/{id}")
-    public PelangganDto get(@PathVariable int id) {
+    public PelangganDto findById(@PathVariable int id) {
         return service.byId(id);
     }
 
     @PostMapping
-    public String create(@RequestBody PelangganDto p) {
-        service.create(p);
-        return "OK";
+    public ResponseEntity<String> create(@RequestBody PelangganDto b) {
+        if (service.create(b) > 0) {
+            return new ResponseEntity<>("Data Barang Keluar berhasil dibuat.", HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>("Gagal membuat data Barang Keluar.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable int id, @RequestBody PelangganDto p) {
-        p.setIdPelanggan(id);
-        service.update(p);
-        return "OK";
+    public ResponseEntity<String> update(@PathVariable int id, @RequestBody PelangganDto b) {
+        b.setIdPelanggan(id);
+        if (service.update(b) > 0) {
+            return new ResponseEntity<>("Data Barang Keluar berhasil diperbarui.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Gagal memperbarui data Barang Keluar.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable int id) {
         service.delete(id);
-        return "OK";
+        return new ResponseEntity<>("Data Barang Keluar berhasil dihapus.", HttpStatus.OK);
     }
 }

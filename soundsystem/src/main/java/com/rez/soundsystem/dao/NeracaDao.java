@@ -49,8 +49,7 @@ public class NeracaDao {
                 dto.getTotalAktiva(),
                 dto.getTotalKewajiban(),
                 dto.getTotalModal(),
-                dto.getIdNeraca()
-        );
+                dto.getIdNeraca());
     }
 
     public int delete(int id) {

@@ -47,8 +47,7 @@ public class InvoiceDao {
                 dto.getTanggalInvoice(),
                 dto.getTotalTagihan(),
                 dto.getStatus(),
-                dto.getTanggalPembayaran()
-        );
+                dto.getTanggalPembayaran());
     }
 
     public int update(InvoiceDto dto) {
@@ -61,8 +60,7 @@ public class InvoiceDao {
                 dto.getTotalTagihan(),
                 dto.getStatus(),
                 dto.getTanggalPembayaran(),
-                dto.getId()
-        );
+                dto.getId());
     }
 
     public int delete(int id) {

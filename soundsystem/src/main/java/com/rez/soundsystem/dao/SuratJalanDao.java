@@ -43,8 +43,7 @@ public class SuratJalanDao {
                 dto.getIdKontrak(),
                 dto.getTanggalKeluar(),
                 dto.getDitandatanganiOleh(),
-                dto.getSoundEngineer()
-        );
+                dto.getSoundEngineer());
     }
 
     public int update(SuratJalanDto dto) {
@@ -55,8 +54,7 @@ public class SuratJalanDao {
                 dto.getTanggalKeluar(),
                 dto.getDitandatanganiOleh(),
                 dto.getSoundEngineer(),
-                dto.getIdSuratJalan()
-        );
+                dto.getIdSuratJalan());
     }
 
     public int delete(int id) {

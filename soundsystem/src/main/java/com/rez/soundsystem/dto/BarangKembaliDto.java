@@ -10,5 +10,5 @@ public class BarangKembaliDto {
     private Integer barangKeluarId;
     private Date tanggalKembali;
     private String kondisi;
-    private String keterangan;   
+    private String keterangan;
 }

@@ -24,13 +24,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Kita modifikasi PenggunaDao untuk bisa mencari berdasarkan username saja
         Optional<PenggunaDto> penggunaOptional = penggunaDao.findByUsername(username);
-        PenggunaDto pengguna = penggunaOptional.orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan: " + username));
+        PenggunaDto pengguna = penggunaOptional
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan: " + username));
 
         // Ambil role dari DTO dan buat menjadi sebuah GrantedAuthority
         // Prefix "ROLE_" adalah konvensi Spring Security
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + pengguna.getRole().toUpperCase());
 
         // Buat objek UserDetails dari Spring Security
-        return new User(pengguna.getUsername(), "", Collections.singletonList(authority)); // Password dikosongkan karena validasi sudah di AuthController
+        return new User(pengguna.getUsername(), "", Collections.singletonList(authority)); // Password dikosongkan
+                                                                                           // karena validasi sudah di
+                                                                                           // AuthController
     }
 }

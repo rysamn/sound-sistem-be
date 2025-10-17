@@ -18,10 +18,14 @@ public class InventoriController {
     private InventoriService service;
 
     @GetMapping
-    public List<InventoriDto> findAll() { return service.getAll(); }
+    public List<InventoriDto> findAll() {
+        return service.getAll();
+    }
 
     @GetMapping("/{id}")
-    public InventoriDto findById(@PathVariable int id) { return service.getById(id); }
+    public InventoriDto findById(@PathVariable int id) {
+        return service.getById(id);
+    }
 
     @PostMapping
     public ResponseEntity<String> create(@RequestBody InventoriDto dto) {
