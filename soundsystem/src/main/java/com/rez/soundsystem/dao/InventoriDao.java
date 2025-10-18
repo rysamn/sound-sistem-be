@@ -21,16 +21,13 @@ public class InventoriDao {
         public InventoriDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             InventoriDto d = new InventoriDto();
             d.setId(rs.getInt("id_barang"));
-            d.setKodeInventori(rs.getString("kode_inventori"));
+            d.setNoInventaris(rs.getString("no_inventaris"));
             d.setNamaBarang(rs.getString("nama_barang"));
             d.setUkuran(rs.getString("ukuran"));
             d.setMerek(rs.getString("merek"));
             d.setFungsi_equipment(rs.getString("fungsi_equipment"));
             d.setKelengkapan(rs.getString("kelengkapan"));
-            d.setStatus(rs.getString("status"));
             d.setFoto(rs.getString("foto"));
-            d.setTipe(rs.getString("tipe"));
-            d.setDeskripsi(rs.getString("deskripsi"));
             return d;
         }
     };
@@ -46,20 +43,19 @@ public class InventoriDao {
     }
 
     public int insert(InventoriDto d) {
-        String sql = "INSERT INTO inventori (kode_inventori, nama_barang, ukuran, merek, fungsi_equipment, kelengkapan, status, foto, tipe, deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO inventori (no_inventaris, nama_barang, ukuran, merek, fungsi_equipment, kelengkapan, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbc.update(sql,
-                d.getKodeInventori(), d.getNamaBarang(), d.getUkuran(),
+                d.getNoInventaris(), d.getNamaBarang(), d.getUkuran(),
                 d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
-                d.getStatus(), d.getFoto(), d.getTipe(), d.getDeskripsi());
+                d.getFoto());
     }
 
     public int update(InventoriDto d) {
-        String sql = "UPDATE inventori SET kode_inventori=?, nama_barang=?, ukuran=?, merek=?, fungsi_equipment=?, kelengkapan=?, status=?, foto=?, tipe=?, deskripsi=? WHERE id_barang=?";
+        String sql = "UPDATE inventori SET no_inventaris=?, nama_barang=?, ukuran=?, merek=?, fungsi_equipment=?, kelengkapan=?, foto=? WHERE id_barang=?";
         return jdbc.update(sql,
-                d.getKodeInventori(), d.getNamaBarang(), d.getUkuran(),
+                d.getNoInventaris(), d.getNamaBarang(), d.getUkuran(),
                 d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
-                d.getStatus(), d.getFoto(), d.getTipe(), d.getDeskripsi(),
-                d.getId());
+                d.getFoto());
     }
 
     public int delete(int id) {
