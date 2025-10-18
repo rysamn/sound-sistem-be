@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PelangganDto {
-    private int idPelanggan;
+    private int id;
     private String nama;
     private String noTelp;
     private String email;

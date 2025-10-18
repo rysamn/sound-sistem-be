@@ -19,7 +19,7 @@ public class PelangganDao {
         @Override
         public PelangganDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             PelangganDto p = new PelangganDto();
-            p.setIdPelanggan(rs.getInt("id_pelanggan"));
+            p.setId(rs.getInt("id_pelanggan"));
             p.setNama(rs.getString("nama"));
             p.setNoTelp(rs.getString("no_telp"));
             p.setEmail(rs.getString("email"));
@@ -43,7 +43,7 @@ public class PelangganDao {
 
     public int update(PelangganDto p) {
         return jdbc.update("UPDATE pelanggan SET nama=?, no_telp=?, email=?, alamat=? WHERE id_pelanggan=?",
-                p.getNama(), p.getNoTelp(), p.getEmail(), p.getAlamat(), p.getIdPelanggan());
+                p.getNama(), p.getNoTelp(), p.getEmail(), p.getAlamat(), p.getId());
     }
 
     public int delete(int id) {

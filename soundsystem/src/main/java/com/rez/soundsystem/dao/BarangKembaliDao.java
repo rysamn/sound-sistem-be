@@ -20,39 +20,44 @@ public class BarangKembaliDao {
         @Override
         public BarangKembaliDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             BarangKembaliDto b = new BarangKembaliDto();
-            b.setId(rs.getInt("id"));
-            b.setBarangKeluarId(rs.getInt("barang_keluar_id"));
+            b.setId(rs.getInt("id_pengembalian"));
+            b.setIdSuratJalan(rs.getInt("surat_jalan_id"));
             b.setTanggalKembali(rs.getDate("tanggal_kembali"));
-            b.setKondisi(rs.getString("kondisi"));
+            b.setKondisiBarang(rs.getString("kondisi_barang"));
+            b.setPenanggungJawaban(rs.getString("penanggung_jawaban"));
+            b.setSoundEngineer(rs.getString("sound_engineer"));
             b.setKeterangan(rs.getString("keterangan"));
             return b;
         }
     };
 
     public List<BarangKembaliDto> findAll() {
-        String sql = "SELECT * FROM barang_kembali ORDER BY id";
+        // Menggunakan kolom id_pengembalian yang konsisten dengan RowMapper
+        String sql = "SELECT * FROM barang_kembali ORDER BY id_pengembalian";
         return jdbcTemplate.query(sql, MAPPER);
     }
 
     public BarangKembaliDto findById(int id) {
-        String sql = "SELECT * FROM barang_kembali WHERE id = ?";
+        String sql = "SELECT * FROM barang_kembali WHERE id_pengembalian = ?";
         return jdbcTemplate.queryForObject(sql, MAPPER, id);
     }
 
     public int insert(BarangKembaliDto b) {
-        String sql = "INSERT INTO barang_kembali (barang_keluar_id, tanggal_kembali, kondisi, keterangan) VALUES (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, b.getBarangKeluarId(), b.getTanggalKembali(), b.getKondisi(),
-                b.getKeterangan());
+        // Menyesuaikan kolom dan getter dengan RowMapper dan DTO
+        String sql = "INSERT INTO barang_kembali (surat_jalan_id, tanggal_kembali, kondisi_barang, penanggung_jawaban, sound_engineer, keterangan) VALUES (?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, b.getIdSuratJalan(), b.getTanggalKembali(), b.getKondisiBarang(),
+                b.getPenanggungJawaban(), b.getSoundEngineer(), b.getKeterangan());
     }
 
     public int update(BarangKembaliDto b) {
-        String sql = "UPDATE barang_kembali SET barang_keluar_id = ?, tanggal_kembali = ?, kondisi = ?, keterangan = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, b.getBarangKeluarId(), b.getTanggalKembali(), b.getKondisi(), b.getKeterangan(),
-                b.getId());
+        // Menyesuaikan kolom, getter, dan WHERE clause dengan RowMapper dan DTO
+        String sql = "UPDATE barang_kembali SET surat_jalan_id = ?, tanggal_kembali = ?, kondisi_barang = ?, penanggung_jawaban = ?, sound_engineer = ?, keterangan = ? WHERE id_pengembalian = ?";
+        return jdbcTemplate.update(sql, b.getIdSuratJalan(), b.getTanggalKembali(), b.getKondisiBarang(),
+                b.getPenanggungJawaban(), b.getSoundEngineer(), b.getKeterangan(), b.getId());
     }
 
     public int delete(int id) {
-        String sql = "DELETE FROM barang_kembali WHERE id = ?";
+        String sql = "DELETE FROM barang_kembali WHERE id_pengembalian = ?";
         return jdbcTemplate.update(sql, id);
     }
 }

@@ -43,7 +43,7 @@ public class JurnalDetailController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody JurnalDetailDto dto) {
-        dto.setIdDetail(id);
+        dto.setId(id);
         if (service.update(dto) > 0) {
             return new ResponseEntity<>("Data Detail Jurnal berhasil diperbarui.", HttpStatus.OK);
         }

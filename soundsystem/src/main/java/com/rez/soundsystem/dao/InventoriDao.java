@@ -20,9 +20,9 @@ public class InventoriDao {
         @Override
         public InventoriDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             InventoriDto d = new InventoriDto();
-            d.setId_barang(rs.getInt("id_barang"));
-            d.setKode_inventori(rs.getString("kode_inventori"));
-            d.setNama_barang(rs.getString("nama_barang"));
+            d.setId(rs.getInt("id_barang"));
+            d.setKodeInventori(rs.getString("kode_inventori"));
+            d.setNamaBarang(rs.getString("nama_barang"));
             d.setUkuran(rs.getString("ukuran"));
             d.setMerek(rs.getString("merek"));
             d.setFungsi_equipment(rs.getString("fungsi_equipment"));
@@ -48,18 +48,18 @@ public class InventoriDao {
     public int insert(InventoriDto d) {
         String sql = "INSERT INTO inventori (kode_inventori, nama_barang, ukuran, merek, fungsi_equipment, kelengkapan, status, foto, tipe, deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbc.update(sql,
-                d.getKode_inventori(), d.getNama_barang(), d.getUkuran(),
+                d.getKodeInventori(), d.getNamaBarang(), d.getUkuran(),
                 d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
                 d.getStatus(), d.getFoto(), d.getTipe(), d.getDeskripsi());
     }
 
     public int update(InventoriDto d) {
-        String sql = "UPDATE inventori SET kode_inventori=?, nama_barang=?, ukuran=?, merek=?, fungsi_equipment=?, kelengkapan=?, status=?, foto=?, tipe=?, deskripsi=? WHERE id=?";
+        String sql = "UPDATE inventori SET kode_inventori=?, nama_barang=?, ukuran=?, merek=?, fungsi_equipment=?, kelengkapan=?, status=?, foto=?, tipe=?, deskripsi=? WHERE id_barang=?";
         return jdbc.update(sql,
-                d.getKode_inventori(), d.getNama_barang(), d.getUkuran(),
+                d.getKodeInventori(), d.getNamaBarang(), d.getUkuran(),
                 d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
                 d.getStatus(), d.getFoto(), d.getTipe(), d.getDeskripsi(),
-                d.getId_barang());
+                d.getId());
     }
 
     public int delete(int id) {

@@ -36,7 +36,7 @@ public class PelangganController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody PelangganDto b) {
-        b.setIdPelanggan(id);
+        b.setId(id);
         if (service.update(b) > 0) {
             return new ResponseEntity<>("Data Barang Keluar berhasil diperbarui.", HttpStatus.OK);
         }

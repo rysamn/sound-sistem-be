@@ -5,7 +5,7 @@ import java.sql.Date;
 
 @Data
 public class JurnalDto {
-    private Integer idJurnal;
+    private Integer id;
     private Date tanggal;
     private String jenis;
     private String keterangan;

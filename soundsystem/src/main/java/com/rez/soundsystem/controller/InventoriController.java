@@ -37,7 +37,7 @@ public class InventoriController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody InventoriDto dto) {
-        dto.setId_barang(id);
+        dto.setId(id);
         if (service.update(dto) > 0) {
             return new ResponseEntity<>("Data Inventori berhasil diperbarui.", HttpStatus.OK);
         }
