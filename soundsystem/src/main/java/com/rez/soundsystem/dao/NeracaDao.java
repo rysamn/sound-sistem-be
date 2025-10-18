@@ -19,8 +19,8 @@ public class NeracaDao {
         @Override
         public NeracaDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             NeracaDto dto = new NeracaDto();
-            dto.setIdNeraca(rs.getInt("id_neraca"));
-            dto.setPeriode(rs.getDate("periode"));
+            dto.setId(rs.getInt("id_neraca"));
+            dto.setPeriode(rs.getString("periode"));
             dto.setTotalAktiva(rs.getDouble("total_aktiva"));
             dto.setTotalKewajiban(rs.getDouble("total_kewajiban"));
             dto.setTotalModal(rs.getDouble("total_modal"));
@@ -49,7 +49,7 @@ public class NeracaDao {
                 dto.getTotalAktiva(),
                 dto.getTotalKewajiban(),
                 dto.getTotalModal(),
-                dto.getIdNeraca());
+                dto.getId());
     }
 
     public int delete(int id) {

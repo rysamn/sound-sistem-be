@@ -18,7 +18,7 @@ public class JurnalDetailDao {
 
     private final RowMapper<JurnalDetailDto> ROW_MAPPER = (rs, rowNum) -> {
         JurnalDetailDto dto = new JurnalDetailDto();
-        dto.setIdDetail(rs.getInt("id_detail"));
+        dto.setId(rs.getInt("id_detail"));
         dto.setIdJurnal(rs.getInt("id_jurnal"));
         dto.setIdAkun(rs.getInt("id_akun"));
         dto.setDebit(rs.getDouble("debit"));
@@ -47,7 +47,7 @@ public class JurnalDetailDao {
         String sql = "UPDATE jurnal_detail SET id_jurnal = ?, id_akun = ?, debit = ?, kredit = ? WHERE id_detail = ?";
         return jdbc.update(
                 sql, dto.getIdJurnal(), dto.getIdAkun(),
-                dto.getDebit(), dto.getKredit(), dto.getIdDetail());
+                dto.getDebit(), dto.getKredit(), dto.getId());
     }
 
     public int delete(int id) {

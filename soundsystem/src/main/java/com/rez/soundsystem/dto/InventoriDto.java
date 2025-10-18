@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class InventoriDto {
-    private Integer id_barang;
-    private String kode_inventori;
-    private String nama_barang;
+    private Integer id;
+    private String kodeInventori;
+    private String namaBarang;
     private String ukuran;
     private String merek;
     private String fungsi_equipment;

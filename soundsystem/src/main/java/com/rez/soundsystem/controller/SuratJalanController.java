@@ -37,7 +37,7 @@ public class SuratJalanController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody SuratJalanDto dto) {
-        dto.setIdSuratJalan(id);
+        dto.setId(id);
         if (service.update(dto) > 0) {
             return new ResponseEntity<>("Surat Jalan berhasil diperbarui.", HttpStatus.OK);
         }

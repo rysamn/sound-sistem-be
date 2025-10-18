@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class JurnalDetailDto {
-    private Integer idDetail;
+    private Integer id;
     private Integer idJurnal;
     private Integer idAkun;
     private Double debit;

@@ -37,7 +37,7 @@ public class JurnalController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody JurnalDto dto) {
-        dto.setIdJurnal(id);
+        dto.setId(id);
         if (service.update(dto) > 0) {
             return new ResponseEntity<>("Jurnal berhasil diperbarui.", HttpStatus.OK);
         }

@@ -19,7 +19,7 @@ public class SuratJalanDao {
         @Override
         public SuratJalanDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             SuratJalanDto dto = new SuratJalanDto();
-            dto.setIdSuratJalan(rs.getInt("id_surat_jalan"));
+            dto.setId(rs.getInt("id_surat_jalan"));
             dto.setIdKontrak(rs.getInt("id_kontrak"));
             dto.setTanggalKeluar(rs.getDate("tanggal_keluar"));
             dto.setDitandatanganiOleh(rs.getString("ditandatangani_oleh"));
@@ -54,7 +54,7 @@ public class SuratJalanDao {
                 dto.getTanggalKeluar(),
                 dto.getDitandatanganiOleh(),
                 dto.getSoundEngineer(),
-                dto.getIdSuratJalan());
+                dto.getId());
     }
 
     public int delete(int id) {

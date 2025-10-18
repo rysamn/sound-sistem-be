@@ -19,7 +19,7 @@ public class JurnalDao {
         @Override
         public JurnalDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             JurnalDto dto = new JurnalDto();
-            dto.setIdJurnal(rs.getInt("id_jurnal"));
+            dto.setId(rs.getInt("id_jurnal"));
             dto.setTanggal(rs.getDate("tanggal"));
             dto.setJenis(rs.getString("jenis"));
             dto.setKeterangan(rs.getString("keterangan"));
@@ -49,7 +49,7 @@ public class JurnalDao {
                 dto.getJenis(),
                 dto.getKeterangan(),
                 dto.getTotal(),
-                dto.getIdJurnal());
+                dto.getId());
     }
 
     public int delete(int id) {

@@ -5,7 +5,7 @@ import java.sql.Date;
 
 @Data
 public class SuratJalanDto {
-    private Integer idSuratJalan;
+    private Integer id;
     private Integer idKontrak;
     private Date tanggalKeluar;
     private String ditandatanganiOleh;

@@ -37,7 +37,7 @@ public class NeracaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody NeracaDto dto) {
-        dto.setIdNeraca(id);
+        dto.setId(id);
         if (service.update(dto) > 0) {
             return new ResponseEntity<>("Data Neraca berhasil diperbarui.", HttpStatus.OK);
         }
