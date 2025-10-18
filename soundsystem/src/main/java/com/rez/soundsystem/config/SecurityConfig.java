@@ -16,28 +16,33 @@ public class SecurityConfig {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    // Kita tidak perlu UserDetailsServiceImpl di sini karena sudah di-inject ke
-    // filter
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // 1. Nonaktifkan CSRF karena kita menggunakan API stateless
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/auth/**",
-                                // Path untuk Swagger UI
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/swagger-resources/**")
-                        .permitAll() // 2. Izinkan semua request ke path di atas
-                        .anyRequest().authenticated() // 3. Amankan semua endpoint lainnya
-                )
-                // 4. Atur agar session tidak dibuat (STATELESS), karena kita akan pakai JWT
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            // ✅ Nonaktifkan CSRF karena pakai API stateless
+            .csrf(csrf -> csrf.disable())
+            
+            // ✅ Aktifkan konfigurasi CORS dari CorsConfig
+            .cors(cors -> {})
 
-        // 5. Tambahkan filter JWT kita sebelum filter standar Spring
+            // ✅ Atur izin endpoint
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/api/auth/**",          // endpoint login/register
+                    "/v3/api-docs/**",       // swagger
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-resources/**"
+                ).permitAll()               // boleh diakses tanpa token
+                .anyRequest().authenticated() // sisanya harus pakai JWT
+            )
+
+            // ✅ Session stateless (JWT)
+            .sessionManagement(session -> 
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            );
+
+        // ✅ Tambahkan JWT filter sebelum filter login default Spring
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

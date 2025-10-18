@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin("*")
+// @CrossOrigin("*")
 public class AuthController {
 
     @Autowired
