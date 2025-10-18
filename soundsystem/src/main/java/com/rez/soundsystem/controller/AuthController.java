@@ -3,6 +3,7 @@ package com.rez.soundsystem.controller;
 import com.rez.soundsystem.dto.LoginRequestDto;
 import com.rez.soundsystem.dto.LoginResponseDto;
 import com.rez.soundsystem.dto.PenggunaDto;
+import com.rez.soundsystem.dto.SignUpRequestDto;
 import com.rez.soundsystem.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,17 @@ public class AuthController {
             return ResponseEntity.ok(new LoginResponseDto(token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username atau password salah.");
+        }
+    }
+
+     @PostMapping("/signup")
+    public ResponseEntity<String> signUp(@RequestBody SignUpRequestDto signUpRequest) {
+        try {
+            authService.register(signUpRequest);
+            return new ResponseEntity<>("Registrasi berhasil. Silakan login.", HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Menangkap exception jika username sudah ada
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

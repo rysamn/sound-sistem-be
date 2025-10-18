@@ -2,14 +2,11 @@ package com.rez.soundsystem.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
-public class PenggunaDto {
-    private Integer idPengguna;
+public class SignUpRequestDto {
     private String username;
+    private String password;
     private String namaLengkap;
     private String email;
     private String role;
-    private LocalDateTime tanggalDibuat;
 }
