@@ -8,6 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -19,32 +24,51 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // ✅ Nonaktifkan CSRF karena pakai API stateless
+            // ✅ Nonaktifkan CSRF karena kita pakai JWT (stateless)
             .csrf(csrf -> csrf.disable())
-            
-            // ✅ Aktifkan konfigurasi CORS dari CorsConfig
+
+            // ✅ Aktifkan CORS
             .cors(cors -> {})
 
-            // ✅ Atur izin endpoint
+            // ✅ Atur endpoint mana yang bebas dan mana yang harus autentikasi
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/api/auth/**",          // endpoint login/register
-                    "/v3/api-docs/**",       // swagger
+                    "/api/auth/**",          // login/register
+                    "/v3/api-docs/**",       // Swagger docs
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/swagger-resources/**"
                 ).permitAll()               // boleh diakses tanpa token
-                .anyRequest().authenticated() // sisanya harus pakai JWT
+                .anyRequest().authenticated() // lainnya harus JWT
             )
 
-            // ✅ Session stateless (JWT)
+            // ✅ Tidak menggunakan session (karena pakai token JWT)
             .sessionManagement(session -> 
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             );
 
-        // ✅ Tambahkan JWT filter sebelum filter login default Spring
+        // ✅ Tambahkan filter JWT sebelum UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    // ✅ Tambahkan konfigurasi CORS di sini (langsung dalam SecurityConfig)
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true); // izinkan cookie/token
+        config.setAllowedOriginPatterns(Arrays.asList(
+            "http://localhost:3000", // Vue (Vite)
+            "http://localhost:5173"  // jika pakai port ini
+        ));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setExposedHeaders(Arrays.asList("Authorization")); // biar FE bisa baca JWT header
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
     }
 }
