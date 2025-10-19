@@ -60,7 +60,8 @@ public class SecurityConfig {
         config.setAllowCredentials(true); // izinkan cookie/token
         config.setAllowedOriginPatterns(Arrays.asList(
             "http://localhost:3000", // Vue (Vite)
-            "http://localhost:5173"  // jika pakai port ini
+            "http://localhost:5173",
+            "https://soundsistemfe-ahcqvli6.b4a.run"  // jika pakai port ini
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
