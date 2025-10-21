@@ -2,10 +2,13 @@ package com.rez.soundsystem.service;
 
 import com.rez.soundsystem.dao.InventoriDao;
 import com.rez.soundsystem.dto.InventoriDto;
+import com.rez.soundsystem.dto.InventoriResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Base64;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoriService {
@@ -13,20 +16,33 @@ public class InventoriService {
     @Autowired
     private InventoriDao dao;
 
-    public List<InventoriDto> getAll() {
+    public List<InventoriResponseDto> getAll() {
         return dao.findAll();
     }
 
-    public InventoriDto getById(int id) {
-        return dao.findById(id);
+    public InventoriResponseDto getById(int id) {
+        // DAO sekarang langsung mengembalikan ResponseDTO
+        InventoriResponseDto dto = dao.findById(id);
+        // Anda mungkin ingin menangani kasus jika dto adalah null (misalnya, melempar exception)
+        if (dto != null) {
+            return dto;
+        }
+        return null; // Atau lempar ResourceNotFoundException
     }
 
     public int create(InventoriDto dto) {
-        return dao.insert(dto);
+        // Konversi Base64 String dari DTO ke byte[] untuk DAO
+        byte[] fotoBytes = (dto.getFoto() != null && !dto.getFoto().isEmpty())
+                ? Base64.getDecoder().decode(dto.getFoto())
+                : null;
+        return dao.insert(dto, fotoBytes);
     }
 
     public int update(InventoriDto dto) {
-        return dao.update(dto);
+        byte[] fotoBytes = (dto.getFoto() != null && !dto.getFoto().isEmpty())
+                ? Base64.getDecoder().decode(dto.getFoto())
+                : null;
+        return dao.update(dto, fotoBytes);
     }
 
     public int delete(int id) {

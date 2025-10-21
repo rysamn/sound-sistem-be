@@ -1,6 +1,7 @@
 package com.rez.soundsystem.controller;
 
 import com.rez.soundsystem.dto.InventoriDto;
+import com.rez.soundsystem.dto.InventoriResponseDto;
 import com.rez.soundsystem.service.InventoriService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +19,12 @@ public class InventoriController {
     private InventoriService service;
 
     @GetMapping
-    public List<InventoriDto> findAll() {
+    public List<InventoriResponseDto> findAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public InventoriDto findById(@PathVariable int id) {
+    public InventoriResponseDto findById(@PathVariable int id) {
         return service.getById(id);
     }
 

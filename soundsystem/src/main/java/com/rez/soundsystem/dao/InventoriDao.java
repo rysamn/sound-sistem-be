@@ -1,6 +1,7 @@
 package com.rez.soundsystem.dao;
 
 import com.rez.soundsystem.dto.InventoriDto;
+import com.rez.soundsystem.dto.InventoriResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.List;
 
 @Repository
@@ -16,46 +18,50 @@ public class InventoriDao {
     @Autowired
     private JdbcTemplate jdbc;
 
-    private final RowMapper<InventoriDto> MAPPER = new RowMapper<InventoriDto>() {
+    // RowMapper ini sekarang akan menghasilkan InventoriResponseDto secara langsung
+    private final RowMapper<InventoriResponseDto> RESPONSE_MAPPER = new RowMapper<InventoriResponseDto>() {
         @Override
-        public InventoriDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-            InventoriDto d = new InventoriDto();
-            d.setId(rs.getInt("id_barang"));
+        public InventoriResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+            InventoriResponseDto d = new InventoriResponseDto();
+            d.setId(rs.getInt("id_barang")); // Pastikan nama kolom di DB adalah id_barang
             d.setNoInventaris(rs.getString("no_inventaris"));
             d.setNamaBarang(rs.getString("nama_barang"));
             d.setUkuran(rs.getString("ukuran"));
             d.setMerek(rs.getString("merek"));
             d.setFungsi_equipment(rs.getString("fungsi_equipment"));
             d.setKelengkapan(rs.getString("kelengkapan"));
-            d.setFoto(rs.getString("foto"));
+            byte[] fotoBytes = rs.getBytes("foto");
+            if (fotoBytes != null && fotoBytes.length > 0) {
+                d.setFoto(Base64.getEncoder().encodeToString(fotoBytes));
+            }
             return d;
         }
     };
 
-    public List<InventoriDto> findAll() {
+    public List<InventoriResponseDto> findAll() {
         String sql = "SELECT * FROM inventori ORDER BY id_barang";
-        return jdbc.query(sql, MAPPER);
+        return jdbc.query(sql, RESPONSE_MAPPER);
     }
 
-    public InventoriDto findById(int id) {
+    public InventoriResponseDto findById(int id) {
         String sql = "SELECT * FROM inventori WHERE id_barang = ?";
-        return jdbc.queryForObject(sql, MAPPER, id);
+        return jdbc.queryForObject(sql, RESPONSE_MAPPER, id);
     }
 
-    public int insert(InventoriDto d) {
-        String sql = "INSERT INTO inventori (no_inventaris, nama_barang, ukuran, merek, fungsi_equipment, kelengkapan, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int insert(InventoriDto d, byte[] fotoBytes) {
+        String sql = "INSERT INTO inventori (no_inventaris, nama_barang, ukuran, merek, fungsi_equipment, kelengkapan, foto) VALUES (?, ?, ?, ?, ?, ?, ?)";
         return jdbc.update(sql,
                 d.getNoInventaris(), d.getNamaBarang(), d.getUkuran(),
                 d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
-                d.getFoto());
+                fotoBytes);
     }
 
-    public int update(InventoriDto d) {
+    public int update(InventoriDto d, byte[] fotoBytes) {
         String sql = "UPDATE inventori SET no_inventaris=?, nama_barang=?, ukuran=?, merek=?, fungsi_equipment=?, kelengkapan=?, foto=? WHERE id_barang=?";
         return jdbc.update(sql,
                 d.getNoInventaris(), d.getNamaBarang(), d.getUkuran(),
                 d.getMerek(), d.getFungsi_equipment(), d.getKelengkapan(),
-                d.getFoto());
+                fotoBytes, d.getId());
     }
 
     public int delete(int id) {
