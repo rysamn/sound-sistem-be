@@ -3,7 +3,7 @@ package com.rez.soundsystem.dto;
 import lombok.Data;
 
 @Data
-public class InventoriDto {
+public class InventoriResponseDto {
     private Integer id;
     private String noInventaris;
     private String namaBarang;
@@ -11,5 +11,5 @@ public class InventoriDto {
     private String merek;
     private String fungsi_equipment;
     private String kelengkapan;
-    private String foto; // Menerima Base64 dari frontend
+    private String foto; // Base64 encoded string
 }
