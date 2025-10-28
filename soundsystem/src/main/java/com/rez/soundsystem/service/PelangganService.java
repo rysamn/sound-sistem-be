@@ -1,7 +1,6 @@
 package com.rez.soundsystem.service;
 
 import com.rez.soundsystem.dao.PelangganDao;
-import com.rez.soundsystem.dto.InventoriDto;
 import com.rez.soundsystem.dto.PelangganDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

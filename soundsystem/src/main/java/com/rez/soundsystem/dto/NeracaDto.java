@@ -1,7 +1,6 @@
 package com.rez.soundsystem.dto;
 
 import lombok.Data;
-import java.sql.Date;
 
 @Data
 public class NeracaDto {
