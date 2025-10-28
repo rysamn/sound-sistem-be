@@ -3,6 +3,8 @@ package com.rez.soundsystem.dao;
 import com.rez.soundsystem.dto.InventoriDto;
 import com.rez.soundsystem.dto.InventoriResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -38,14 +40,26 @@ public class InventoriDao {
         }
     };
 
-    public List<InventoriResponseDto> findAll() {
-        String sql = "SELECT * FROM inventori ORDER BY id_barang";
-        return jdbc.query(sql, RESPONSE_MAPPER);
+    public List<InventoriResponseDto> findAll(Pageable pageable) {
+        String sql = "SELECT * FROM inventori ORDER BY id_barang LIMIT ? OFFSET ?";
+        return jdbc.query(sql, RESPONSE_MAPPER, pageable.getPageSize(), pageable.getOffset());
+    }
+
+    public long count() {
+        String sql = "SELECT count(*) FROM inventori";
+        Long total = jdbc.queryForObject(sql, Long.class);
+        return total != null ? total : 0;
     }
 
     public InventoriResponseDto findById(int id) {
         String sql = "SELECT * FROM inventori WHERE id_barang = ?";
-        return jdbc.queryForObject(sql, RESPONSE_MAPPER, id);
+        try {
+            return jdbc.queryForObject(sql, RESPONSE_MAPPER, id);
+        } catch (EmptyResultDataAccessException e) {
+            // Mengembalikan null jika tidak ada data yang ditemukan,
+            // ini akan ditangani di service layer.
+            return null;
+        }
     }
 
     public int insert(InventoriDto d, byte[] fotoBytes) {

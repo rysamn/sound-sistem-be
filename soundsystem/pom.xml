@@ -49,6 +49,12 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 
+		<!-- Tambahkan ini untuk Paginasi (Page, Pageable, dll) -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+		</dependency>
+
 		<!-- Spring Security (untuk otentikasi dan otorisasi) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

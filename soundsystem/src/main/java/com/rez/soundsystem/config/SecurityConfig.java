@@ -26,28 +26,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // ✅ Nonaktifkan CSRF karena kita pakai JWT (stateless)
-            .csrf(csrf -> csrf.disable())
+                // ✅ Nonaktifkan CSRF karena kita pakai JWT (stateless)
+                .csrf(csrf -> csrf.disable())
 
-            // ✅ Aktifkan CORS
-            .cors(cors -> {})
+                // ✅ Aktifkan CORS
+                .cors(cors -> {
+                })
 
-            // ✅ Atur endpoint mana yang bebas dan mana yang harus autentikasi
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/api/auth/**",          // login/register
-                    "/v3/api-docs/**",       // Swagger docs
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/swagger-resources/**"
-                ).permitAll()               // boleh diakses tanpa token
-                .anyRequest().authenticated() // lainnya harus JWT
-            )
+                // ✅ Atur endpoint mana yang bebas dan mana yang harus autentikasi
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/auth/**", // login/register
+                                "/v3/api-docs/**", // Swagger docs
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**")
+                        .permitAll() // boleh diakses tanpa token
+                        .anyRequest().authenticated() // lainnya harus JWT
+                )
 
-            // ✅ Tidak menggunakan session (karena pakai token JWT)
-            .sessionManagement(session -> 
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
+                // ✅ Tidak menggunakan session (karena pakai token JWT)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // ✅ Tambahkan filter JWT sebelum UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -61,8 +60,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // izinkan cookie/token
         config.setAllowedOriginPatterns(Arrays.asList(
-            "http://localhost:3000", // Vue (Vite)
-            "http://localhost:5173"  // jika pakai port ini
+                "http://localhost:3000", // Vue (Vite)
+                "http://localhost:5173" // jika pakai port ini
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));

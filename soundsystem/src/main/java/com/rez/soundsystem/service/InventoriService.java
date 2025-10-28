@@ -3,6 +3,9 @@ package com.rez.soundsystem.service;
 import com.rez.soundsystem.dao.InventoriDao;
 import com.rez.soundsystem.dto.InventoriDto;
 import com.rez.soundsystem.dto.InventoriResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +19,15 @@ public class InventoriService {
     @Autowired
     private InventoriDao dao;
 
-    public List<InventoriResponseDto> getAll() {
-        return dao.findAll();
+    public Page<InventoriResponseDto> getAll(Pageable pageable) {
+        List<InventoriResponseDto> inventoriList = dao.findAll(pageable);
+        long total = dao.count();
+        return new PageImpl<>(inventoriList, pageable, total);
     }
 
     public InventoriResponseDto getById(int id) {
         // DAO sekarang langsung mengembalikan ResponseDTO
         InventoriResponseDto dto = dao.findById(id);
-        // Anda mungkin ingin menangani kasus jika dto adalah null (misalnya, melempar exception)
         if (dto != null) {
             return dto;
         }
