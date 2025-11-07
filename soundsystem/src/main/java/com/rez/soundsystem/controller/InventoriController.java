@@ -26,10 +26,11 @@ public class InventoriController {
     @GetMapping
     public ResponseEntity<Page<InventoriResponseDto>> findAll(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "") String search) {
         try {
             Pageable pageable = PageRequest.of(page, size);
-            return ResponseEntity.ok(service.getAll(pageable));
+            return ResponseEntity.ok(service.getAll(pageable, search));
         } catch (Exception e) {
             logger.error("Error saat mengambil semua data inventori: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

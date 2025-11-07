@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -40,14 +41,38 @@ public class InventoriDao {
         }
     };
 
-    public List<InventoriResponseDto> findAll(Pageable pageable) {
-        String sql = "SELECT * FROM inventori ORDER BY id_barang LIMIT ? OFFSET ?";
-        return jdbc.query(sql, RESPONSE_MAPPER, pageable.getPageSize(), pageable.getOffset());
+    public List<InventoriResponseDto> findAll(Pageable pageable, String search) {
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM inventori");
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" WHERE LOWER(nama_barang) LIKE ? OR LOWER(merek) LIKE ? OR LOWER(no_inventaris) LIKE ?");
+            String searchTerm = "%" + search.toLowerCase() + "%";
+            params.add(searchTerm);
+            params.add(searchTerm);
+            params.add(searchTerm);
+        }
+
+        sql.append(" ORDER BY id_barang LIMIT ? OFFSET ?");
+        params.add(pageable.getPageSize());
+        params.add(pageable.getOffset());
+
+        return jdbc.query(sql.toString(), RESPONSE_MAPPER, params.toArray());
     }
 
-    public long count() {
-        String sql = "SELECT count(*) FROM inventori";
-        Long total = jdbc.queryForObject(sql, Long.class);
+    public long count(String search) {
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT count(*) FROM inventori");
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" WHERE LOWER(nama_barang) LIKE ? OR LOWER(merek) LIKE ? OR LOWER(no_inventaris) LIKE ?");
+            String searchTerm = "%" + search.toLowerCase() + "%";
+            params.add(searchTerm);
+            params.add(searchTerm);
+            params.add(searchTerm);
+        }
+
+        Long total = jdbc.queryForObject(sql.toString(), Long.class, params.toArray());
         return total != null ? total : 0;
     }
 

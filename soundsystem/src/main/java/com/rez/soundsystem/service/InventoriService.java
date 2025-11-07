@@ -18,9 +18,9 @@ public class InventoriService {
     @Autowired
     private InventoriDao dao;
 
-    public Page<InventoriResponseDto> getAll(Pageable pageable) {
-        List<InventoriResponseDto> inventoriList = dao.findAll(pageable);
-        long total = dao.count();
+    public Page<InventoriResponseDto> getAll(Pageable pageable, String search) {
+        List<InventoriResponseDto> inventoriList = dao.findAll(pageable, search);
+        long total = dao.count(search);
         return new PageImpl<>(inventoriList, pageable, total);
     }
 
