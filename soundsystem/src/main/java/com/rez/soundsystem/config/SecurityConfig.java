@@ -3,6 +3,7 @@ package com.rez.soundsystem.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // <-- TAMBAHKAN ANOTASI INI
 public class SecurityConfig {
 
     @Autowired
@@ -60,8 +62,7 @@ public class SecurityConfig {
         config.setAllowCredentials(true); // izinkan cookie/token
         config.setAllowedOriginPatterns(Arrays.asList(
             "http://localhost:3000", // Vue (Vite)
-            "http://localhost:5173",
-            "https://soundsistemfe-ahcqvli6.b4a.run"  // jika pakai port ini
+            "http://localhost:5173"  // jika pakai port ini
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
