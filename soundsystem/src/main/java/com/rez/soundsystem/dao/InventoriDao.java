@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -38,9 +39,40 @@ public class InventoriDao {
         }
     };
 
-    public List<InventoriResponseDto> findAll() {
-        String sql = "SELECT * FROM inventori ORDER BY id_barang";
-        return jdbc.query(sql, RESPONSE_MAPPER);
+    public List<InventoriResponseDto> findAll(String search, int page, int size) {
+        int offset = page * size;
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM inventori ");
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append("WHERE LOWER(no_inventaris) LIKE ? OR LOWER(nama_barang) LIKE ? OR LOWER(merek) LIKE ? ");
+            String searchTerm = "%" + search.toLowerCase() + "%";
+            params.add(searchTerm);
+            params.add(searchTerm);
+            params.add(searchTerm);
+        }
+
+        sql.append("ORDER BY id_barang LIMIT ? OFFSET ?");
+        params.add(size);
+        params.add(offset);
+
+        return jdbc.query(sql.toString(), RESPONSE_MAPPER, params.toArray());
+    }
+
+    public long count(String search) {
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM inventori ");
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append("WHERE LOWER(no_inventaris) LIKE ? OR LOWER(nama_barang) LIKE ? OR LOWER(merek) LIKE ? ");
+            String searchTerm = "%" + search.toLowerCase() + "%";
+            params.add(searchTerm);
+            params.add(searchTerm);
+            params.add(searchTerm);
+        }
+
+        Long total = jdbc.queryForObject(sql.toString(), Long.class, params.toArray());
+        return total != null ? total : 0L;
     }
 
     public InventoriResponseDto findById(int id) {

@@ -2,6 +2,7 @@ package com.rez.soundsystem.controller;
 
 import com.rez.soundsystem.dto.InventoriDto;
 import com.rez.soundsystem.dto.InventoriResponseDto;
+import com.rez.soundsystem.dto.PagedInventoriResponseDto;
 import com.rez.soundsystem.service.InventoriService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,15 @@ public class InventoriController {
     private InventoriService service;
 
     @GetMapping
-    public ResponseEntity<List<InventoriResponseDto>> findAll() {
+    public ResponseEntity<?> findAll(
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         try {
-            return ResponseEntity.ok(service.getAll());
+            return ResponseEntity.ok(service.getAll(search, page, size));
         } catch (Exception e) {
             logger.error("Error saat mengambil semua data inventori: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Gagal mengambil data inventori.");
         }
     }
 
@@ -59,7 +63,8 @@ public class InventoriController {
             return new ResponseEntity<>("Gagal membuat data Inventori.", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             logger.error("Error saat membuat data inventori: {}", e.getMessage(), e);
-            return new ResponseEntity<>("Terjadi kesalahan pada server saat membuat data.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Terjadi kesalahan pada server saat membuat data.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -71,10 +76,12 @@ public class InventoriController {
                 return new ResponseEntity<>("Data Inventori berhasil diperbarui.", HttpStatus.OK);
             }
             logger.warn("Gagal memperbarui data inventori dengan id {}, tidak ada baris yang terpengaruh.", id);
-            return new ResponseEntity<>("Gagal memperbarui data Inventori, mungkin data tidak ditemukan.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Gagal memperbarui data Inventori, mungkin data tidak ditemukan.",
+                    HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Error saat memperbarui data inventori dengan id {}: {}", id, e.getMessage(), e);
-            return new ResponseEntity<>("Terjadi kesalahan pada server saat memperbarui data.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Terjadi kesalahan pada server saat memperbarui data.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,14 +89,16 @@ public class InventoriController {
     public ResponseEntity<String> delete(@PathVariable int id) {
         try {
             if (service.delete(id) > 0) {
-                
+
                 return new ResponseEntity<>("Data Inventori berhasil dihapus.", HttpStatus.OK);
             }
             logger.warn("Gagal menghapus data inventori dengan id {}, tidak ada baris yang terpengaruh.", id);
-            return new ResponseEntity<>("Gagal menghapus data Inventori, mungkin data tidak ditemukan.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Gagal menghapus data Inventori, mungkin data tidak ditemukan.",
+                    HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Error saat menghapus data inventori dengan id {}: {}", id, e.getMessage(), e);
-            return new ResponseEntity<>("Terjadi kesalahan pada server saat menghapus data.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Terjadi kesalahan pada server saat menghapus data.",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    } 
+    }
 }

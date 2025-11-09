@@ -2,6 +2,7 @@ package com.rez.soundsystem.service;
 
 import com.rez.soundsystem.dao.InventoriDao;
 import com.rez.soundsystem.dto.InventoriDto;
+import com.rez.soundsystem.dto.PagedInventoriResponseDto;
 import com.rez.soundsystem.dto.InventoriResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,25 @@ public class InventoriService {
     @Autowired
     private InventoriDao dao;
 
-    public List<InventoriResponseDto> getAll() {
-        return dao.findAll();
+    public PagedInventoriResponseDto getAll(String search, int page, int size) {
+        List<InventoriResponseDto> content = dao.findAll(search, page, size);
+        long totalElements = dao.count(search);
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        PagedInventoriResponseDto response = new PagedInventoriResponseDto();
+        response.setContent(content);
+        response.setPage(page);
+        response.setSize(size);
+        response.setTotalElements(totalElements);
+        response.setTotalPages(totalPages);
+        return response;
     }
 
     public InventoriResponseDto getById(int id) {
         // DAO sekarang langsung mengembalikan ResponseDTO
         InventoriResponseDto dto = dao.findById(id);
-        // Anda mungkin ingin menangani kasus jika dto adalah null (misalnya, melempar exception)
+        // Anda mungkin ingin menangani kasus jika dto adalah null (misalnya, melempar
+        // exception)
         if (dto != null) {
             return dto;
         }
