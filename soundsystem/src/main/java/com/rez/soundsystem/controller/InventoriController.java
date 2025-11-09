@@ -82,6 +82,7 @@ public class InventoriController {
     public ResponseEntity<String> delete(@PathVariable int id) {
         try {
             if (service.delete(id) > 0) {
+                
                 return new ResponseEntity<>("Data Inventori berhasil dihapus.", HttpStatus.OK);
             }
             logger.warn("Gagal menghapus data inventori dengan id {}, tidak ada baris yang terpengaruh.", id);
@@ -90,5 +91,5 @@ public class InventoriController {
             logger.error("Error saat menghapus data inventori dengan id {}: {}", id, e.getMessage(), e);
             return new ResponseEntity<>("Terjadi kesalahan pada server saat menghapus data.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    } 
 }
