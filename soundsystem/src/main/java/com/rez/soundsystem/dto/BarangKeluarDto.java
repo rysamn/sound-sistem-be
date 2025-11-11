@@ -1,7 +1,5 @@
 package com.rez.soundsystem.dto;
 
-import java.sql.Date;
-
 import lombok.Data;
 
 @Data
